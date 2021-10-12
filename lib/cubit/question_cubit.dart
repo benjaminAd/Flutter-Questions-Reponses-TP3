@@ -2,10 +2,11 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:questions_reponses/model/triplet.dart';
 import 'package:questions_reponses/model/question.dart';
+import 'package:questions_reponses/repositories/questions_repositories.dart';
 
 class QuestionCubit extends Cubit<Triplet<Question, int, int>> {
-  final List<Question> _questions = [
-    new Question("Paris est-elle la capitale de la France ?",
+    List<Question> _questions = [
+    /*new Question("Paris est-elle la capitale de la France ?",
         "images/tour-eiffel-paris.jpg", true),
     new Question(
         "Le zèbre possède-t-il des rayures ?",
@@ -16,12 +17,20 @@ class QuestionCubit extends Cubit<Triplet<Question, int, int>> {
     new Question("La France est-elle un pays Américain ? ",
         "images/frenchflag.jpg", false),
     new Question("Le développeur s'appelle Benjamin ADOLPHE ",
-        "images/1000emote1.png", true)
+        "images/1000emote1.png", true)*/
   ];
+  var _questionrepo = new QuestionsRepository();
   var _nbgoodanswer = 0;
   var _nbquestion = 0;
 
-  QuestionCubit() : super(new Triplet(new Question("", "path", false), 0, 0)) {
+  QuestionCubit() : super(new Triplet(new Question("", "path", false), 0, 0)){
+    _sendQuestion();
+  }
+
+
+    set questions(List<Question> value) {
+    _questions = value;
+    print(questions.length);
     _sendQuestion();
   }
 
@@ -73,6 +82,7 @@ class QuestionCubit extends Cubit<Triplet<Question, int, int>> {
   }
 
   void _sendQuestion() {
+    print(_questions.length);
     if (_nbquestion < _questions.length) {
       emit(new Triplet(_questions[_nbquestion], _nbgoodanswer, _nbquestion));
     } else {
