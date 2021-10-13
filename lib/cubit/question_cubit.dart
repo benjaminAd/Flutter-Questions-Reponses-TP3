@@ -6,7 +6,7 @@ import 'package:questions_reponses/repositories/questions_repositories.dart';
 
 class QuestionCubit extends Cubit<Triplet<Question, int, int>> {
     List<Question> _questions = [
-    /*new Question("Paris est-elle la capitale de la France ?",
+    new Question("Paris est-elle la capitale de la France ?",
         "images/tour-eiffel-paris.jpg", true),
     new Question(
         "Le zèbre possède-t-il des rayures ?",
@@ -17,7 +17,7 @@ class QuestionCubit extends Cubit<Triplet<Question, int, int>> {
     new Question("La France est-elle un pays Américain ? ",
         "images/frenchflag.jpg", false),
     new Question("Le développeur s'appelle Benjamin ADOLPHE ",
-        "images/1000emote1.png", true)*/
+        "images/1000emote1.png", true)
   ];
   var _questionrepo = new QuestionsRepository();
   var _nbgoodanswer = 0;

@@ -3,22 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:questions_reponses/cubit/question_cubit.dart';
+import 'package:questions_reponses/provider/questions_firebase_provider.dart';
 import 'package:questions_reponses/repositories/questions_repositories.dart';
+import 'package:questions_reponses/repositories/storage_firebase.dart';
 import 'model/triplet.dart';
 import 'model/question.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
   final QuestionsRepository _question_repository = new QuestionsRepository();
+  final QuestionsFirebaseProvider _questionsFirebaseProvider = new QuestionsFirebaseProvider();
+  final StorageFirebase _storageFirebase = new StorageFirebase();
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<QuerySnapshot>(
-        future: _question_repository.getAllQuestions(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          context.read<QuestionCubit>().questions = getQuestionsFromSnapshot(snapshot);
-          print("Here2");
-          return Scaffold(
+    var _providerCubit = Provider.of<QuestionCubit>(context);
+    return StreamBuilder(
+      stream: _questionsFirebaseProvider.getAllQuestions(),
+      builder: (context,snapshot){
+        print("Récupération Firebase "+(snapshot.data! as List<Question>).last.question);
+        _providerCubit.questions = snapshot.data! as List<Question>;
+        return Scaffold(
             appBar: AppBar(
               title: Text("Questions / Réponses"),
             ),
@@ -33,7 +38,23 @@ class HomePage extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.2,
                   child:
                       BlocBuilder<QuestionCubit, Triplet<Question, int, int>>(
-                    builder: (context, pair) => Image.asset(pair.key.path),
+                    builder: (context, pair) {
+                      print(pair.key.path);
+                      return FutureBuilder<String>(
+                          future: _storageFirebase
+                              .getImageFromStorage(pair.key.path),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<String> snapshot) {
+                            if (snapshot.hasError) {
+                              print("error ->" + snapshot.error.toString());
+                              return Text("Une erreur s'est produite");
+                            }
+                            if (snapshot.hasData) {
+                              return Image.network(snapshot.data!);
+                            }
+                            return Text("Je cherche");
+                          });
+                    },
                   ),
                 ),
                 Container(
@@ -138,7 +159,7 @@ class HomePage extends StatelessWidget {
               ],
             ),
           );
-        });
+      });
   }
 
   List<Question> getQuestionsFromSnapshot(

@@ -6,13 +6,7 @@ class QuestionsRepository {
   var _questionsdb =
       FirebaseFirestore.instance.collection(Constants.questions_reference);
 
-  List<Question> _questionsListFromSnapshot(QuerySnapshot snapshot) {
-    return snapshot.docs.map((doc) {
-      return Question.toJson(doc.data());
-    }).toList();
-  }
-
-  Future<QuerySnapshot> getAllQuestions() {
-    return _questionsdb.get();
+  Stream<QuerySnapshot> getAllQuestions() {
+    return _questionsdb.snapshots();
   }
 }
