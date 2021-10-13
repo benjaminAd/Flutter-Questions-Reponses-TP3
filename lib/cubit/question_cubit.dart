@@ -7,17 +7,7 @@ import 'package:questions_reponses/repositories/questions_repositories.dart';
 class QuestionCubit extends Cubit<Triplet<Question, int, int>> {
     List<Question> _questions = [
     new Question("Paris est-elle la capitale de la France ?",
-        "images/tour-eiffel-paris.jpg", true),
-    new Question(
-        "Le zèbre possède-t-il des rayures ?",
-        "images/cover-r4x3w1000-57e155592330a-pourquoi-le-zebre-est-il-raye.jpg",
-        true),
-    new Question("Le buffle est-il carnivore ? ",
-        "images/b11b597d02_50036097_800px-serengeti-bueffel1.jpg", false),
-    new Question("La France est-elle un pays Américain ? ",
-        "images/frenchflag.jpg", false),
-    new Question("Le développeur s'appelle Benjamin ADOLPHE ",
-        "images/1000emote1.png", true)
+        "images/tour-eiffel-paris.jpg", true)
   ];
   var _questionrepo = new QuestionsRepository();
   var _nbgoodanswer = 0;

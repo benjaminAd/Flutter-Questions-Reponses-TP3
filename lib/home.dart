@@ -11,18 +11,15 @@ import 'model/question.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
-  final QuestionsRepository _question_repository = new QuestionsRepository();
   final QuestionsFirebaseProvider _questionsFirebaseProvider = new QuestionsFirebaseProvider();
   final StorageFirebase _storageFirebase = new StorageFirebase();
 
   @override
   Widget build(BuildContext context) {
-    var _providerCubit = Provider.of<QuestionCubit>(context);
-    return StreamBuilder(
-      stream: _questionsFirebaseProvider.getAllQuestions(),
+    return FutureBuilder(
+      future: _questionsFirebaseProvider.getAllQuestions(),
       builder: (context,snapshot){
-        print("Récupération Firebase "+(snapshot.data! as List<Question>).last.question);
-        _providerCubit.questions = snapshot.data! as List<Question>;
+        context.read<QuestionCubit>().questions = snapshot.data! as List<Question>;
         return Scaffold(
             appBar: AppBar(
               title: Text("Questions / Réponses"),

@@ -4,8 +4,8 @@ import 'package:questions_reponses/repositories/questions_repositories.dart';
 class QuestionsFirebaseProvider {
   final QuestionsRepository _repository = new QuestionsRepository();
 
-  Stream<List<Question>> getAllQuestions() {
-    return _repository.getAllQuestions().map(
-        (list) => list.docs.map((doc) => Question.toJson(doc.data())).toList());
+  Future<List<Question>> getAllQuestions() async {
+    return await _repository.getAllQuestions().then(
+        (value) => value.docs.map((e) => Question.toJson(e.data())).toList());
   }
 }
