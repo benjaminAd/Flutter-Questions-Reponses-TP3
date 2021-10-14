@@ -1,25 +1,39 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 import 'package:questions_reponses/cubit/question_cubit.dart';
-import 'package:questions_reponses/provider/questions_firebase_provider.dart';
-import 'package:questions_reponses/repositories/questions_repositories.dart';
+import 'package:questions_reponses/model/question.dart';
+import 'package:questions_reponses/Utils/triplet.dart';
 import 'package:questions_reponses/repositories/storage_firebase.dart';
-import 'model/triplet.dart';
-import 'model/question.dart';
+import 'package:questions_reponses/views/error_view.dart';
+import 'package:questions_reponses/views/loading_view.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
-  final QuestionsFirebaseProvider _questionsFirebaseProvider = new QuestionsFirebaseProvider();
+class QuestionsView extends StatefulWidget {
+  List<Question> _questions = [];
+
+ List<Question> get questions => this._questions;
+
+ set questions(List<Question> value) => this._questions = value;
+  
+  QuestionsView({ Key? key, required List<Question> questions}):super(key: key){  
+    this._questions = questions;
+}
+  @override
+  _QuestionsViewState createState() => _QuestionsViewState();
+}
+
+class _QuestionsViewState extends State<QuestionsView> {
+  List<Question> _questions = [];
   final StorageFirebase _storageFirebase = new StorageFirebase();
+  
+  @override
+  void initState() {
+    super.initState();
+    this._questions = widget.questions;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _questionsFirebaseProvider.getAllQuestions(),
-      builder: (context,snapshot){
-        context.read<QuestionCubit>().questions = snapshot.data! as List<Question>;
+    context.read<QuestionCubit>().questions = this._questions;
         return Scaffold(
             appBar: AppBar(
               title: Text("Questions / Réponses"),
@@ -44,12 +58,12 @@ class HomePage extends StatelessWidget {
                               AsyncSnapshot<String> snapshot) {
                             if (snapshot.hasError) {
                               print("error ->" + snapshot.error.toString());
-                              return Text("Une erreur s'est produite");
+                              return ErrorView(error: snapshot.error.toString());
                             }
                             if (snapshot.hasData) {
                               return Image.network(snapshot.data!);
                             }
-                            return Text("Je cherche");
+                            return Loading();
                           });
                     },
                   ),
@@ -156,19 +170,5 @@ class HomePage extends StatelessWidget {
               ],
             ),
           );
-      });
-  }
-
-  List<Question> getQuestionsFromSnapshot(
-      AsyncSnapshot<QuerySnapshot> snapshot) {
-    List<Question> res = [];
-    if (snapshot.hasData) {
-      snapshot.data!.docs.forEach((element) {
-        if (element.exists) {
-          res.add(Question.toJson(element.data()));
-        }
-      });
-    }
-    return res;
   }
 }

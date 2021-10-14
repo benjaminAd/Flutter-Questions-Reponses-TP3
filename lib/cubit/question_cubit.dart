@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:questions_reponses/model/triplet.dart';
+import 'package:questions_reponses/Utils/triplet.dart';
 import 'package:questions_reponses/model/question.dart';
 import 'package:questions_reponses/repositories/questions_repositories.dart';
 
