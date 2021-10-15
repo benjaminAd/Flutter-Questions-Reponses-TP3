@@ -33,7 +33,7 @@ class HomePage extends StatelessWidget {
     if (snapshot.hasData) {
       snapshot.data!.docs.forEach((element) {
         if (element.exists) {
-          res.add(Question.toJson(element.data()));
+          res.add(Question.fromJson(element.data()));
         }
       });
     }

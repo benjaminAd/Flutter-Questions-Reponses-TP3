@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:questions_reponses/cubit/question_cubit.dart';
 import 'package:questions_reponses/model/question.dart';
 import 'package:questions_reponses/Utils/triplet.dart';
+import 'package:questions_reponses/provider/image_provider.dart';
 import 'package:questions_reponses/repositories/storage_firebase.dart';
 import 'package:questions_reponses/views/add_question_view.dart';
 import 'package:questions_reponses/views/error_view.dart';
@@ -28,7 +29,7 @@ class QuestionsView extends StatefulWidget {
 class _QuestionsViewState extends State<QuestionsView> {
   List<Question> _questions = [];
   final StorageFirebase _storageFirebase = new StorageFirebase();
-
+  final ImageFirebaseProvider _imageFirabeseProvider = new ImageFirebaseProvider();
   @override
   void initState() {
     super.initState();
@@ -71,7 +72,7 @@ class _QuestionsViewState extends State<QuestionsView> {
                   print(pair.key.path);
                   return FutureBuilder<String>(
                       future:
-                          _storageFirebase.getImageFromStorage(pair.key.path),
+                          _imageFirabeseProvider.getImageFromPath(pair.key.path),
                       builder: (BuildContext context,
                           AsyncSnapshot<String> snapshot) {
                         if (snapshot.hasError) {

@@ -10,4 +10,8 @@ class QuestionsRepository {
   Future<QuerySnapshot> getAllQuestions() {
     return _questionsdb.get();
   }
+
+  Future<DocumentReference> addQuestion(Map<String,dynamic> question){
+    return _questionsdb.add(question);
+  }
 }
