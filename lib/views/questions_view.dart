@@ -45,7 +45,7 @@ class _QuestionsViewState extends State<QuestionsView> {
       appBar: AppBar(
         title: Text("Questions / Réponses"),
         leading: IconButton(
-          icon: FaIcon(FontAwesomeIcons.arrowLeft),
+          icon: FaIcon(FontAwesomeIcons.chevronLeft),
           onPressed: () {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => HomePage()));

@@ -28,10 +28,7 @@ class FirebaseInit extends StatelessWidget {
               return ErrorView(error: snapshot.error.toString());
             }
             if (snapshot.connectionState == ConnectionState.done) {
-              return Provider<QuestionCubit>(
-                create: (_) => QuestionCubit(),
-                child: HomePage(),
-              );
+              return HomePage();
             }
             return Loading();
           },

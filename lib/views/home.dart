@@ -2,9 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:provider/provider.dart';
 import 'package:questions_reponses/Utils/constants.dart';
+import 'package:questions_reponses/cubit/question_cubit.dart';
 import 'package:questions_reponses/model/question.dart';
 import 'package:questions_reponses/provider/questions_firebase_provider.dart';
+import 'package:questions_reponses/views/add_question_view.dart';
 import 'package:questions_reponses/views/error_view.dart';
 import 'package:questions_reponses/views/loading_view.dart';
 import 'package:questions_reponses/views/questions_view.dart';
@@ -114,7 +117,13 @@ class _HomePageState extends State<HomePage> {
                               },
                               child: Text("Jouer")),
                           ElevatedButton(
-                              onPressed: () {}, child: Text("Ajouter")),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => AddQuestion()));
+                              },
+                              child: Text("Ajouter")),
                         ],
                       ),
                     ),
@@ -133,7 +142,10 @@ class _HomePageState extends State<HomePage> {
             return ErrorView(error: snapshot.error.toString());
           }
           if (snapshot.hasData) {
-            return QuestionsView(questions: snapshot.data! as List<Question>);
+            return Provider<QuestionCubit>(
+                create: (_) => QuestionCubit(),
+                child: QuestionsView(questions: snapshot.data! as List<Question>),
+              );
           }
           return Loading();
         });

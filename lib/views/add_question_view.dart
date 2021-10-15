@@ -9,7 +9,7 @@ import 'package:questions_reponses/provider/image_provider.dart';
 import 'package:questions_reponses/provider/questions_firebase_provider.dart';
 
 class AddQuestion extends StatefulWidget {
-  AddQuestion({Key? key, required List<Question> questions}) : super(key: key);
+  AddQuestion({Key? key}) : super(key: key);
 
   @override
   _AddQuestionState createState() => _AddQuestionState();
