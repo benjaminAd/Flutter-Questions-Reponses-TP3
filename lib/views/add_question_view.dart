@@ -1,32 +1,33 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:questions_reponses/model/question.dart';
 import 'package:questions_reponses/provider/image_provider.dart';
 import 'package:questions_reponses/provider/questions_firebase_provider.dart';
-import 'package:questions_reponses/repositories/questions_repositories.dart';
 
 class AddQuestion extends StatefulWidget {
-  const AddQuestion({Key? key}) : super(key: key);
+  AddQuestion({Key? key, required List<Question> questions}) : super(key: key);
 
   @override
   _AddQuestionState createState() => _AddQuestionState();
 }
 
 class _AddQuestionState extends State<AddQuestion> {
+  final TextEditingController _themeController = new TextEditingController();
+  final TextEditingController _questionController = new TextEditingController();
   File? image;
   bool _isSwitchOn = false;
   final QuestionsFirebaseProvider _questionsFirebaseProvider =
       new QuestionsFirebaseProvider();
   final ImageFirebaseProvider _imageFirebaseProvider =
       new ImageFirebaseProvider();
+
+
   @override
   Widget build(BuildContext context) {
-    var _themeController = new TextEditingController();
-    var _questionController = new TextEditingController();
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Ajout d'une question"),
@@ -112,7 +113,6 @@ class _AddQuestionState extends State<AddQuestion> {
                       onPressed: () {
                         print(_questionController.text);
                         if (_questionController.text != "" && image != null) {
-                          print("Je suis ici 3");
                           _imageFirebaseProvider
                               .uploadImage(image!)
                               .then((value) {
@@ -122,7 +122,14 @@ class _AddQuestionState extends State<AddQuestion> {
                                     _questionController.text,
                                     "/" + basename(image!.path),
                                     _isSwitchOn))
-                                .then((value) => print("Je suis ici"));
+                                .then((value) {
+                              Scaffold.of(ctxScaffold).showSnackBar(SnackBar(
+                                content: Text("Votre question a été ajouter"),
+                                duration: Duration(milliseconds: 500),
+                              ));
+                              //Navigator.push(context,
+                                //  MaterialPageRoute(builder: (context)=>QuestionsView(questions: questions,)));
+                            });
                           });
                         } else {
                           Scaffold.of(ctxScaffold).showSnackBar(SnackBar(
@@ -194,5 +201,12 @@ class _AddQuestionState extends State<AddQuestion> {
       _isSwitchOn = value;
       print("Switch ->" + _isSwitchOn.toString());
     });
+  }
+
+  @override
+  void dispose() {
+    _themeController.dispose();
+    _questionController.dispose();
+    super.dispose();
   }
 }

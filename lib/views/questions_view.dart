@@ -48,7 +48,7 @@ class _QuestionsViewState extends State<QuestionsView> {
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => AddQuestion()));
+                      MaterialPageRoute(builder: (context) => AddQuestion(questions: this._questions,)));
                 },
                 child: Icon(
                   FontAwesomeIcons.plus,
