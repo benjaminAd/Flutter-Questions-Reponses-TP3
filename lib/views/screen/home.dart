@@ -1,16 +1,15 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:questions_reponses/Utils/constants.dart';
 import 'package:questions_reponses/cubit/question_cubit.dart';
-import 'package:questions_reponses/model/question.dart';
-import 'package:questions_reponses/provider/questions_firebase_provider.dart';
-import 'package:questions_reponses/views/add_question_view.dart';
-import 'package:questions_reponses/views/error_view.dart';
-import 'package:questions_reponses/views/loading_view.dart';
-import 'package:questions_reponses/views/questions_view.dart';
+import 'package:questions_reponses/data/model/question.dart';
+import 'package:questions_reponses/data/provider/questions_firebase_provider.dart';
+import 'package:questions_reponses/views/screen/add_question_view.dart';
+import 'package:questions_reponses/views/widget/error_view.dart';
+import 'package:questions_reponses/views/widget/loading_view.dart';
+import 'package:questions_reponses/views/screen/questions_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

@@ -1,11 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
-import 'package:questions_reponses/cubit/question_cubit.dart';
-import 'package:questions_reponses/model/question.dart';
-import 'package:questions_reponses/views/error_view.dart';
-import 'package:questions_reponses/views/loading_view.dart';
+import 'package:questions_reponses/views/widget/error_view.dart';
+import 'package:questions_reponses/views/widget/loading_view.dart';
 
 import 'home.dart';
 

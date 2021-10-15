@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
-import 'package:questions_reponses/model/question.dart';
-import 'package:questions_reponses/provider/image_provider.dart';
-import 'package:questions_reponses/provider/questions_firebase_provider.dart';
+import 'package:questions_reponses/data/model/question.dart';
+import 'package:questions_reponses/data/provider/image_provider.dart';
+import 'package:questions_reponses/data/provider/questions_firebase_provider.dart';
 
 class AddQuestion extends StatefulWidget {
   AddQuestion({Key? key}) : super(key: key);

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:path/path.dart';
-import 'package:questions_reponses/repositories/storage_firebase.dart';
+import 'package:questions_reponses/data/repositories/storage_firebase.dart';
 
 class ImageFirebaseProvider{
   var _firebaseStorageRepository = new StorageFirebase();

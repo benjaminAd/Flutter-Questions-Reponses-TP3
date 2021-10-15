@@ -1,8 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:questions_reponses/Utils/triplet.dart';
-import 'package:questions_reponses/model/question.dart';
-import 'package:questions_reponses/repositories/questions_repositories.dart';
+import 'package:questions_reponses/data/model/question.dart';
 
 class QuestionCubit extends Cubit<Triplet<Question, int, int>> {
   //Une question par défaut car quelques fois le bloc cubit est appelé alors que la requête n'est pas termiéne

@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:questions_reponses/cubit/question_cubit.dart';
-import 'package:questions_reponses/model/question.dart';
 import 'package:questions_reponses/Utils/triplet.dart';
-import 'package:questions_reponses/provider/image_provider.dart';
-import 'package:questions_reponses/repositories/storage_firebase.dart';
-import 'package:questions_reponses/views/add_question_view.dart';
-import 'package:questions_reponses/views/error_view.dart';
-import 'package:questions_reponses/views/home.dart';
-import 'package:questions_reponses/views/loading_view.dart';
+import 'package:questions_reponses/data/model/question.dart';
+import 'package:questions_reponses/data/provider/image_provider.dart';
+import 'package:questions_reponses/views/widget/error_view.dart';
+import 'package:questions_reponses/views/screen/home.dart';
+import 'package:questions_reponses/views/widget/loading_view.dart';
 
 class QuestionsView extends StatefulWidget {
   List<Question> _questions = [];
@@ -29,7 +27,6 @@ class QuestionsView extends StatefulWidget {
 
 class _QuestionsViewState extends State<QuestionsView> {
   List<Question> _questions = [];
-  final StorageFirebase _storageFirebase = new StorageFirebase();
   final ImageFirebaseProvider _imageFirabeseProvider =
       new ImageFirebaseProvider();
   @override

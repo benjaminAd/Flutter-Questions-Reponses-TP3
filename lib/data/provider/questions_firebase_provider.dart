@@ -1,6 +1,6 @@
 import 'package:questions_reponses/Utils/constants.dart';
-import 'package:questions_reponses/model/question.dart';
-import 'package:questions_reponses/repositories/questions_repositories.dart';
+import 'package:questions_reponses/data/model/question.dart';
+import 'package:questions_reponses/data/repositories/questions_repositories.dart';
 
 class QuestionsFirebaseProvider {
   final QuestionsRepository _repository = new QuestionsRepository();
