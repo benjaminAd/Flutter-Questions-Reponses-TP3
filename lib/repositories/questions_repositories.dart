@@ -11,6 +11,10 @@ class QuestionsRepository {
     return _questionsdb.get();
   }
 
+  Future<QuerySnapshot> getQuestionsFromTheme(String theme){
+    return _questionsdb.where(Constants.theme_field,isEqualTo: theme).get();
+  }
+
   Future<DocumentReference> addQuestion(Map<String,dynamic> question){
     return _questionsdb.add(question);
   }

@@ -25,7 +25,6 @@ class _AddQuestionState extends State<AddQuestion> {
   final ImageFirebaseProvider _imageFirebaseProvider =
       new ImageFirebaseProvider();
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,7 +111,9 @@ class _AddQuestionState extends State<AddQuestion> {
                   ElevatedButton(
                       onPressed: () {
                         print(_questionController.text);
-                        if (_questionController.text != "" && image != null) {
+                        if (_questionController.text != "" &&
+                            image != null &&
+                            _themeController.text != "") {
                           _imageFirebaseProvider
                               .uploadImage(image!)
                               .then((value) {
@@ -121,6 +122,7 @@ class _AddQuestionState extends State<AddQuestion> {
                                 .addQuestion(new Question(
                                     _questionController.text,
                                     "/" + basename(image!.path),
+                                    _themeController.text,
                                     _isSwitchOn))
                                 .then((value) {
                               Scaffold.of(ctxScaffold).showSnackBar(SnackBar(
@@ -128,7 +130,7 @@ class _AddQuestionState extends State<AddQuestion> {
                                 duration: Duration(milliseconds: 500),
                               ));
                               //Navigator.push(context,
-                                //  MaterialPageRoute(builder: (context)=>QuestionsView(questions: questions,)));
+                              //  MaterialPageRoute(builder: (context)=>QuestionsView(questions: questions,)));
                             });
                           });
                         } else {

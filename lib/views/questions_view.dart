@@ -42,20 +42,6 @@ class _QuestionsViewState extends State<QuestionsView> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Questions / Réponses"),
-        actions: [
-          Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => AddQuestion(questions: this._questions,)));
-                },
-                child: Icon(
-                  FontAwesomeIcons.plus,
-                  size: MediaQuery.of(context).size.width * 0.06,
-                ),
-              )),
-        ],
       ),
       backgroundColor: Colors.blueGrey,
       body: SingleChildScrollView(

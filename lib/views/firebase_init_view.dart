@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:questions_reponses/cubit/question_cubit.dart';
+import 'package:questions_reponses/model/question.dart';
 import 'package:questions_reponses/views/error_view.dart';
 import 'package:questions_reponses/views/loading_view.dart';
 
@@ -26,7 +28,7 @@ class FirebaseInit extends StatelessWidget {
               return ErrorView(error: snapshot.error.toString());
             }
             if (snapshot.connectionState == ConnectionState.done) {
-              return BlocProvider(
+              return Provider<QuestionCubit>(
                 create: (_) => QuestionCubit(),
                 child: HomePage(),
               );
