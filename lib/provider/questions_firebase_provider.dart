@@ -6,6 +6,10 @@ class QuestionsFirebaseProvider {
 
   Future<List<Question>> getAllQuestions() async {
     return await _repository.getAllQuestions().then(
-        (value) => value.docs.map((e) => Question.toJson(e.data())).toList());
+        (value) => value.docs.map((e) => Question.fromJson(e.data())).toList());
+  }
+
+  Future<void> addQuestion(Question question) async{
+    await _repository.addQuestion(question.toJson());
   }
 }
