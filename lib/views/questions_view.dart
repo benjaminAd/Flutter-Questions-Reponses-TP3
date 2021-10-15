@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:questions_reponses/cubit/question_cubit.dart';
 import 'package:questions_reponses/model/question.dart';
 import 'package:questions_reponses/Utils/triplet.dart';
 import 'package:questions_reponses/repositories/storage_firebase.dart';
+import 'package:questions_reponses/views/add_question_view.dart';
 import 'package:questions_reponses/views/error_view.dart';
 import 'package:questions_reponses/views/loading_view.dart';
 
 class QuestionsView extends StatefulWidget {
   List<Question> _questions = [];
 
- List<Question> get questions => this._questions;
+  List<Question> get questions => this._questions;
 
- set questions(List<Question> value) => this._questions = value;
-  
-  QuestionsView({ Key? key, required List<Question> questions}):super(key: key){  
+  set questions(List<Question> value) => this._questions = value;
+
+  QuestionsView({Key? key, required List<Question> questions})
+      : super(key: key) {
     this._questions = questions;
-}
+  }
+
   @override
   _QuestionsViewState createState() => _QuestionsViewState();
 }
@@ -24,7 +28,7 @@ class QuestionsView extends StatefulWidget {
 class _QuestionsViewState extends State<QuestionsView> {
   List<Question> _questions = [];
   final StorageFirebase _storageFirebase = new StorageFirebase();
-  
+
   @override
   void initState() {
     super.initState();
@@ -34,141 +38,153 @@ class _QuestionsViewState extends State<QuestionsView> {
   @override
   Widget build(BuildContext context) {
     context.read<QuestionCubit>().questions = this._questions;
-        return Scaffold(
-            appBar: AppBar(
-              title: Text("Questions / Réponses"),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Questions / Réponses"),
+        actions: [
+          Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => AddQuestion()));
+                },
+                child: Icon(
+                  FontAwesomeIcons.plus,
+                  size: MediaQuery.of(context).size.width * 0.06,
+                ),
+              )),
+        ],
+      ),
+      backgroundColor: Colors.blueGrey,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              margin: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.05),
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.2,
+              child: BlocBuilder<QuestionCubit, Triplet<Question, int, int>>(
+                builder: (context, pair) {
+                  print(pair.key.path);
+                  return FutureBuilder<String>(
+                      future:
+                          _storageFirebase.getImageFromStorage(pair.key.path),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<String> snapshot) {
+                        if (snapshot.hasError) {
+                          print("error ->" + snapshot.error.toString());
+                          return ErrorView(error: snapshot.error.toString());
+                        }
+                        if (snapshot.hasData) {
+                          return Image.network(snapshot.data!);
+                        }
+                        return Loading();
+                      });
+                },
+              ),
             ),
-            backgroundColor: Colors.blueGrey,
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.05),
-                  width: MediaQuery.of(context).size.width,
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.3,
+              child: Center(
+                child: Container(
+                  alignment: Alignment.center,
+                  width: MediaQuery.of(context).size.width * 0.8,
                   height: MediaQuery.of(context).size.height * 0.2,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
                   child:
                       BlocBuilder<QuestionCubit, Triplet<Question, int, int>>(
-                    builder: (context, pair) {
-                      print(pair.key.path);
-                      return FutureBuilder<String>(
-                          future: _storageFirebase
-                              .getImageFromStorage(pair.key.path),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<String> snapshot) {
-                            if (snapshot.hasError) {
-                              print("error ->" + snapshot.error.toString());
-                              return ErrorView(error: snapshot.error.toString());
-                            }
-                            if (snapshot.hasData) {
-                              return Image.network(snapshot.data!);
-                            }
-                            return Loading();
-                          });
-                    },
+                    builder: (context, pair) => Text(pair.key.question),
                   ),
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  child: Center(
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: MediaQuery.of(context).size.width * 0.8,
-                      height: MediaQuery.of(context).size.height * 0.2,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      child: BlocBuilder<QuestionCubit,
-                          Triplet<Question, int, int>>(
-                        builder: (context, pair) => Text(pair.key.question),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  child: Column(
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              height: MediaQuery.of(context).size.height * 0.2,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () => {
-                              context
-                                  .read<QuestionCubit>()
-                                  .checkAnswer(true, context)
-                            },
-                            style: ButtonStyle(
-                              padding: MaterialStateProperty.all<EdgeInsets>(
-                                  EdgeInsets.symmetric(
-                                      horizontal:
-                                          MediaQuery.of(context).size.width *
-                                              0.1)),
-                            ),
-                            child: Text("Vrai"),
-                          ),
-                          ElevatedButton(
-                            onPressed: () => {
-                              context
-                                  .read<QuestionCubit>()
-                                  .checkAnswer(false, context)
-                            },
-                            style: ButtonStyle(
-                              padding: MaterialStateProperty.all<EdgeInsets>(
-                                  EdgeInsets.symmetric(
-                                      horizontal:
-                                          MediaQuery.of(context).size.width *
-                                              0.1)),
-                            ),
-                            child: Text("Faux"),
-                          ),
-                          BlocBuilder<QuestionCubit,
-                              Triplet<Question, int, int>>(
-                            builder: (context, triplet) => ElevatedButton(
-                              onPressed: () => {
-                                (triplet.secondValue >=
-                                        context
-                                            .read<QuestionCubit>()
-                                            .questions
-                                            .length)
-                                    ? context.read<QuestionCubit>().resetAll()
-                                    : context
-                                        .read<QuestionCubit>()
-                                        .changeQuestion(false, context)
-                              },
-                              style: ButtonStyle(
-                                padding: MaterialStateProperty.all<EdgeInsets>(
-                                    EdgeInsets.symmetric(
-                                        horizontal:
-                                            MediaQuery.of(context).size.width *
-                                                0.1)),
-                              ),
-                              child: (triplet.secondValue >=
-                                      context
-                                          .read<QuestionCubit>()
-                                          .questions
-                                          .length)
-                                  ? Icon(Icons.restart_alt)
-                                  : Icon(Icons.arrow_forward),
-                            ),
-                          ),
-                        ],
+                      ElevatedButton(
+                        onPressed: () => {
+                          context
+                              .read<QuestionCubit>()
+                              .checkAnswer(true, context)
+                        },
+                        style: ButtonStyle(
+                          padding: MaterialStateProperty.all<EdgeInsets>(
+                              EdgeInsets.symmetric(
+                                  horizontal:
+                                      MediaQuery.of(context).size.width * 0.1)),
+                        ),
+                        child: Text("Vrai"),
                       ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.05,
+                      ElevatedButton(
+                        onPressed: () => {
+                          context
+                              .read<QuestionCubit>()
+                              .checkAnswer(false, context)
+                        },
+                        style: ButtonStyle(
+                          padding: MaterialStateProperty.all<EdgeInsets>(
+                              EdgeInsets.symmetric(
+                                  horizontal:
+                                      MediaQuery.of(context).size.width * 0.1)),
+                        ),
+                        child: Text("Faux"),
                       ),
                       BlocBuilder<QuestionCubit, Triplet<Question, int, int>>(
-                        builder: (context, triplet) => Text(
-                            '${triplet.value} / ${context.read<QuestionCubit>().questions.length}'),
+                        builder: (context, triplet) => ElevatedButton(
+                          onPressed: () => {
+                            (triplet.secondValue >=
+                                    context
+                                        .read<QuestionCubit>()
+                                        .questions
+                                        .length)
+                                ? context.read<QuestionCubit>().resetAll()
+                                : context
+                                    .read<QuestionCubit>()
+                                    .changeQuestion(false, context)
+                          },
+                          style: ButtonStyle(
+                            padding: MaterialStateProperty.all<EdgeInsets>(
+                                EdgeInsets.symmetric(
+                                    horizontal:
+                                        MediaQuery.of(context).size.width *
+                                            0.1)),
+                          ),
+                          child: (triplet.secondValue >=
+                                  context
+                                      .read<QuestionCubit>()
+                                      .questions
+                                      .length)
+                              ? Icon(Icons.restart_alt)
+                              : Icon(Icons.arrow_forward),
+                        ),
                       ),
                     ],
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.05,
+                  ),
+                  BlocBuilder<QuestionCubit, Triplet<Question, int, int>>(
+                    builder: (context, triplet) => Text(
+                        '${triplet.value} / ${context.read<QuestionCubit>().questions.length}'),
+                  ),
+                ],
+              ),
             ),
-          );
+          ],
+        ),
+      ),
+    );
   }
 }

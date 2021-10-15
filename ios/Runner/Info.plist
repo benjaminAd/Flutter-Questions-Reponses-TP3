@@ -41,5 +41,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSCameraUsageDescription</key>
+    <string>Besoin d'accéder à la caméra afin de capturer une image pour la question</string>
+
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Besoin d'accéder à la bibliothèque afin de récupérer une image pour la question</string>
 </dict>
 </plist>

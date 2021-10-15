@@ -1,6 +1,7 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:questions_reponses/Utils/constants.dart';
-import 'package:questions_reponses/model/question.dart';
 
 class QuestionsRepository {
   var _questionsdb =

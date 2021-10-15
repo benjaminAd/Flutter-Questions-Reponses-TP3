@@ -5,11 +5,11 @@ import 'package:questions_reponses/model/question.dart';
 import 'package:questions_reponses/repositories/questions_repositories.dart';
 
 class QuestionCubit extends Cubit<Triplet<Question, int, int>> {
+  //Une question par défaut car quelques fois le bloc cubit est appelé alors que la requête n'est pas termiéne
     List<Question> _questions = [
     new Question("Paris est-elle la capitale de la France ?",
         "images/tour-eiffel-paris.jpg", true)
   ];
-  var _questionrepo = new QuestionsRepository();
   var _nbgoodanswer = 0;
   var _nbquestion = 0;
 
