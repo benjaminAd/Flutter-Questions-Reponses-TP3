@@ -8,6 +8,7 @@ import 'package:questions_reponses/provider/image_provider.dart';
 import 'package:questions_reponses/repositories/storage_firebase.dart';
 import 'package:questions_reponses/views/add_question_view.dart';
 import 'package:questions_reponses/views/error_view.dart';
+import 'package:questions_reponses/views/home.dart';
 import 'package:questions_reponses/views/loading_view.dart';
 
 class QuestionsView extends StatefulWidget {
@@ -29,7 +30,8 @@ class QuestionsView extends StatefulWidget {
 class _QuestionsViewState extends State<QuestionsView> {
   List<Question> _questions = [];
   final StorageFirebase _storageFirebase = new StorageFirebase();
-  final ImageFirebaseProvider _imageFirabeseProvider = new ImageFirebaseProvider();
+  final ImageFirebaseProvider _imageFirabeseProvider =
+      new ImageFirebaseProvider();
   @override
   void initState() {
     super.initState();
@@ -42,20 +44,13 @@ class _QuestionsViewState extends State<QuestionsView> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Questions / Réponses"),
-        actions: [
-          Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => AddQuestion(questions: this._questions,)));
-                },
-                child: Icon(
-                  FontAwesomeIcons.plus,
-                  size: MediaQuery.of(context).size.width * 0.06,
-                ),
-              )),
-        ],
+        leading: IconButton(
+          icon: FaIcon(FontAwesomeIcons.chevronLeft),
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => HomePage()));
+          },
+        ),
       ),
       backgroundColor: Colors.blueGrey,
       body: SingleChildScrollView(
@@ -71,8 +66,8 @@ class _QuestionsViewState extends State<QuestionsView> {
                 builder: (context, pair) {
                   print(pair.key.path);
                   return FutureBuilder<String>(
-                      future:
-                          _imageFirabeseProvider.getImageFromPath(pair.key.path),
+                      future: _imageFirabeseProvider
+                          .getImageFromPath(pair.key.path),
                       builder: (BuildContext context,
                           AsyncSnapshot<String> snapshot) {
                         if (snapshot.hasError) {
