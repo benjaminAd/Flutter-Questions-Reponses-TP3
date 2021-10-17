@@ -7,8 +7,8 @@ class QuestionsRepository {
   var _questionsdb =
       FirebaseFirestore.instance.collection(Constants.questions_reference);
 
-  Future<QuerySnapshot> getAllQuestions() {
-    return _questionsdb.get();
+  Stream<QuerySnapshot> getAllQuestions() {
+    return _questionsdb.snapshots();
   }
 
   Future<QuerySnapshot> getQuestionsFromTheme(String theme){

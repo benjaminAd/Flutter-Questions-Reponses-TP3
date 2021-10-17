@@ -6,8 +6,7 @@ class QuestionsFirebaseProvider {
   final QuestionsRepository _repository = new QuestionsRepository();
 
   Future<List<Question>> getAllQuestions() async {
-    return await _repository.getAllQuestions().then(
-        (value) => value.docs.map((e) => Question.fromJson(e.data())).toList());
+    return await _repository.getAllQuestions().forEach((element) {element.docs.map((e) => Question.fromJson(e.data()!)).toList();});
   }
 
   Future<List<Question>> getQuestionsFromTheme(String theme) async {
@@ -19,11 +18,9 @@ class QuestionsFirebaseProvider {
   }
 
   Future<List<String>> getAllTheme() async {
-    return await _repository.getAllQuestions().then((value) => value.docs
-        .map((e) => Question.fromJson(e.data()).theme)
-        .toList()
-        .toSet()
-        .toList());
+    return await _repository.getAllQuestions().forEach((element) { 
+      element.docs.map((e) => Question.fromJson(e.data())).toList().toSet().toList();
+    });
   }
 
   Future<void> addQuestion(Question question) async {
